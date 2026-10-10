@@ -14,7 +14,7 @@ export async function commodityAnalyticsRoutes(fastify: FastifyInstance) {
                 c.unit, 
                 p.price,
                 p.period_of,
-                ROW_NUMBER() OVER (PARTITION BY c.id ORDER BY p.date DESC) as rn
+                ROW_NUMBER() OVER (PARTITION BY c.id ORDER BY p.period_of DESC) as rn
                 FROM commodities c
                 JOIN price_logs p ON c.id = p.commodity_id
                 )
@@ -33,7 +33,7 @@ export async function commodityAnalyticsRoutes(fastify: FastifyInstance) {
         try {
             const { id } = request.params;
             const result = await query(
-                `SELECT price, period_of, market, FROM price_logs WHERE commodity_id = $1 ORDER BY period_of ASC`,
+                `SELECT price, period_of, market FROM price_logs WHERE commodity_id = $1 ORDER BY period_of ASC`,
                 [id]
             );
             return { success: true, data: result.rows };

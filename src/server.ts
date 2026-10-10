@@ -1,7 +1,13 @@
 import { buildApp } from "./app.js";
+import { commodityAnalyticsRoutes } from "./routes/commodities.js";
+import cors from "@fastify/cors";
+
 
 const server = async () => {
-    const app = await buildApp()
+    const app = await buildApp();
+
+    app.register(cors, { origin: '*'} );
+    app.register(commodityAnalyticsRoutes);
 
     try {
         await app.listen({ port:3000, host: '0.0.0.0' })
@@ -10,6 +16,6 @@ const server = async () => {
         app.log.error(err)
         process.exit(1)
     }
-}
+};
 
-server()
+server();

@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { PDFParse } from 'pdf-parse';
 import { GoogleGenAI } from '@google/genai';
 import query from '../config/db.js';
@@ -8,11 +9,15 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const ai = new GoogleGenAI();
 
 async function runAIExtraction() {
     try {
-        const filePath = path.join(__dirname, '../../');
+        console.log("Reading PDF File");
+        const filePath = path.join(__dirname, '../../data/first.pdf');
         const dataBuffer = await fs.readFile(filePath);
 
         const parser = new PDFParse({ data: dataBuffer });

@@ -1,9 +1,9 @@
 import type { FastifyInstance } from "fastify";
-import Fastity from 'fastify';
+import Fastify from 'fastify';
 
 
 export async function buildApp(): Promise<FastifyInstance> {
-    const fastify = Fastity({
+    const fastify = Fastify({
         logger: true,
     })
 
