@@ -47,3 +47,20 @@ export async function getCommodityTimeSeries(commodityId: number): Promise<Commo
     data: dataPoints,
   };
 }
+
+export async function getMarketInflationOverview() {
+  const sql = `
+    SELECT 
+      c.category,
+      COUNT(DISTINCT c.id) as total_commodities,
+      AVG(p.price) as average_price,
+      p.period_of
+    FROM commodities c
+    JOIN price_logs p ON c.id = p.commodity_id
+    GROUP BY c.category, p.period_of
+    ORDER BY p.period_of DESC;
+  `;
+
+  const result = await query(sql);
+  return result.rows;
+}
