@@ -1,15 +1,4 @@
-export interface dataChart {
-  period_of: string;
-  price: number;
-}
-
-export interface commodityTimeSeries {
-  commodity_id: number;
-  name: string;
-  unit: string;
-  category?: string;
-  data: dataChart[];
-}
+import { dataChart, commodityTimeSeries } from '../interface.ts';
 
 export async function getCommodityTimeSeries(commodityId: number): Promise<CommodityTimeSeries | null> {
   const sql = `
