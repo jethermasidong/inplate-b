@@ -1,5 +1,5 @@
 import type { FastifyInstance, FastifyRequest } from "fastify";
-import query from "../config/db.js";
+import { query } from "../config/db.js";
 
 export async function commodityAnalyticsRoutes(fastify: FastifyInstance) {
 
