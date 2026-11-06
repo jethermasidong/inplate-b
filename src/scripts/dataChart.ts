@@ -1,4 +1,7 @@
-import { dataChart, commodityTimeSeries } from '../interface.ts';
+import type { DataChart, CommodityTimeSeries } from '../types/interface.js';
+import query from '../config/db.js';
+
+
 
 export async function getCommodityTimeSeries(commodityId: number): Promise<CommodityTimeSeries | null> {
   const sql = `
@@ -23,13 +26,13 @@ export async function getCommodityTimeSeries(commodityId: number): Promise<Commo
 
   const firstRow = result.rows[0];
 
-  const dataPoints: ChartDataPoint[] = result.rows.map((row) => ({
+  const dataPoints: DataChart[] = result.rows.map((row) => ({
     period_of: row.period_of,
     price: Number(row.price),
   }));
 
   return {
-    commodityId: firstRow.commodity_id,
+    commodity_id: firstRow.commodity_id,
     name: firstRow.name,
     unit: firstRow.unit,
     category: firstRow.category,

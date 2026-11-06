@@ -27,7 +27,7 @@ async function runAIExtraction() {
         const rawText = pdfData.text;
 
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
+            model: 'gemini-3.8-flash',
             contents: [
                 {
                     text: `You are a data extraction assistant. 
@@ -38,7 +38,7 @@ async function runAIExtraction() {
                     - "market": string (e.g "NCR")
                     - "name": string (e.g "Regular Milled Rice")
                     - "specification": string (e.g "20-40% bran streak" IF ANY)
-                    - "unit": number (e.g "kg", "pack")
+                    - "unit": string (e.g "kg", "pack")
                     - "price": number (e.g "20.00")
                     
                     Raw Text:
@@ -69,7 +69,7 @@ async function runAIExtraction() {
             await query(
                 `INSERT INTO price_logs (commodity_id, price, market, period_of)
                 VALUES($1, $2, $3, $4);`,
-                [commodityId, item.price. item.market, item.period_of]
+                [commodityId, item.price, item.market, item.period_of]
             );
         }
 

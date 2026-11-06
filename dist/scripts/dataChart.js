@@ -1,2 +1,48 @@
-export {};
+import query from '../config/db.js';
+export async function getCommodityTimeSeries(commodityId) {
+    const sql = `
+    SELECT 
+      c.id as commodity_id,
+      c.name,
+      c.unit,
+      c.category,
+      p.price,
+      p.period_of
+    FROM commodities c
+    JOIN price_logs p ON c.id = p.commodity_id
+    WHERE c.id = $1
+    ORDER BY p.period_of ASC;
+  `;
+    const result = await query(sql, [commodityId]);
+    if (result.rows.length === 0) {
+        return null;
+    }
+    const firstRow = result.rows[0];
+    const dataPoints = result.rows.map((row) => ({
+        period_of: row.period_of,
+        price: Number(row.price),
+    }));
+    return {
+        commodity_id: firstRow.commodity_id,
+        name: firstRow.name,
+        unit: firstRow.unit,
+        category: firstRow.category,
+        data: dataPoints,
+    };
+}
+export async function getMarketInflationOverview() {
+    const sql = `
+    SELECT 
+      c.category,
+      COUNT(DISTINCT c.id) as total_commodities,
+      AVG(p.price) as average_price,
+      p.period_of
+    FROM commodities c
+    JOIN price_logs p ON c.id = p.commodity_id
+    GROUP BY c.category, p.period_of
+    ORDER BY p.period_of DESC;
+  `;
+    const result = await query(sql);
+    return result.rows;
+}
 //# sourceMappingURL=dataChart.js.map

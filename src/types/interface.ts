@@ -1,12 +1,12 @@
-export interface dataChart {
+export interface DataChart {
   period_of: string;
   price: number;
 }
 
-export interface commodityTimeSeries {
+export interface CommodityTimeSeries {
   commodity_id: number;
   name: string;
   unit: string;
   category?: string;
-  data: dataChart[];
+  data: DataChart[];
 }

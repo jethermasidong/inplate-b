@@ -1,4 +1,4 @@
-import query from "../config/db.js";
+import { query } from "../config/db.js";
 export async function commodityAnalyticsRoutes(fastify) {
     fastify.get('/api/analytics/overview', async (request, reply) => {
         try {

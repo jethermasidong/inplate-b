@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch src/server.ts",
-    "parser": "npx tsc && node --max-old-space-size=4096 src/scripts/aiIngest.js",
+    "parser": "node --max-old-space-size=4096 --import tsx src/scripts/aiParser.ts",
     "build": "tsc",
     "start": "node dist/server.ts"
   },
