@@ -1,4 +1,5 @@
 import type { FastifyInstance, FastifyRequest } from "fastify";
+import { getCommodityTimeSeries, getMarketInflationOverview } from "../scripts/dataChart.js";
 import { query } from "../config/db.js";
 
 export async function commodityAnalyticsRoutes(fastify: FastifyInstance) {
@@ -40,6 +41,32 @@ export async function commodityAnalyticsRoutes(fastify: FastifyInstance) {
         } catch (error) {
             request.log.error(error);
             return reply.code(500).send({ error: 'Failed to fetch history' });
+        }
+    });
+
+    fastify.get('/api/analytics/trend/:id', async (request: FastifyRequest<{ Params: { id: string } }>, reply) => {
+        try {
+            const commodityId = parseInt(request.params.id, 10);
+            const timeSeriesData = await getCommodityTimeSeries(commodityId);
+
+            if (!timeSeriesData) {
+                return reply.code(404).send({ error: 'Commodity time series not found' });
+            }
+
+            return { success: true, data: timeSeriesData };
+        } catch (error) {
+            request.log.error(error);
+            return reply.code(500).send({ error: 'Failed to fetch commodity time series' });
+        }
+    });
+
+    fastify.get('/api/analytics/market-inflation', async (request, reply) => {
+        try {
+            const inflationData = await getMarketInflationOverview();
+            return { success: true, data: inflationData };
+        } catch (error) {
+            request.log.error(error);
+            return reply.code(500).send({ error: 'Failed to fetch market inflation overview' });
         }
     });
 
