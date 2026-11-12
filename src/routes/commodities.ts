@@ -13,6 +13,7 @@ export async function commodityAnalyticsRoutes(fastify: FastifyInstance) {
                 c.name,
                 c.specification,
                 c.unit, 
+                c.category,
                 p.price,
                 p.period_of,
                 ROW_NUMBER() OVER (PARTITION BY c.id ORDER BY p.period_of DESC) as rn
